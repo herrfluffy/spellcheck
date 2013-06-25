@@ -1,0 +1,51 @@
+#!/usr/bin/python
+
+import random, re, sys
+
+#choose default dictionary file used
+dict = '/usr/share/dict/words'
+
+
+#make a list of words from the dictionary file
+words = []
+
+with open(dict) as f:
+	words = [entry.strip() for entry in f]
+
+#make a set of words to check inclusion
+wordset = frozenset(words)
+
+skeleton = {}
+
+def word_filter(word):
+	stage_1 = word.lower() 	#eliminate upper case
+	stage_2 = re.sub('(a|e|i|o|u)', 'e', stage_1) #replace vowels (with another vowel to not lose information - e is chosen here)
+	stage_3 = re.sub(r'([\w\'-])\1+', r'\1', stage_2) #remove duplicate letters, apostrophes, and hyphens
+	return stage_3
+
+
+#make a set of word skeletons containing the list of words
+#each candidate is added to the list if a skeleton is found
+#i.e. skeleton['hegh'] could be equal to ['Hugh','high']
+#since both words map to 'hegh' after word_filter()
+for word in words:
+	candidate = word_filter(word)
+	if candidate in skeleton:
+		skeleton[candidate].append(word)
+	else:
+		skeleton[candidate] = [word]
+
+
+#filter and loop stdin outputting random selections from possible candidates
+while True:
+	try:
+		word = raw_input(">")
+		candidate = word_filter(word)
+		if word in wordset:
+			print word
+		elif candidate in skeleton:
+			print random.choice(skeleton[candidate])
+		else:
+			print "No suggestion!"
+	except EOFError:
+		break
