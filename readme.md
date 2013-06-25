@@ -1,8 +1,6 @@
-spellcheck - a solution to Justin.tv's spellcheck problem:
-http://www.twitch.tv/problems/spellcheck
+http://www.twitch.tv/problems/spellcheck has specific details.
 
 Description and usage
-=====================
 	Two python scripts are provided: spellcheck and barrage. Both use /usr/share/dict/words as the hardcoded dictionary. To use a different dictionary, please change the 'dict' string variable in each script appropriately.
 	
 	spellcheck reads words from STDIN and prints the best spelling suggestion found per word or "NO SUGGESTION" if none can be found to STDOUT. If multiple spelling suggestions are valid, a random one is picked by Python's pseudorandom number generator.
